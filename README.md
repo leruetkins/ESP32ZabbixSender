@@ -26,6 +26,10 @@ See `sample_ESP32ZabbixSender/sample_ESP32ZabbixSender.ino`
 https://github.com/zaphodus/ESP8266ZabbixSender
 
 # Improvements done:
+## Ethernet
+This library was changed form WiFi to Ethernet
+
+## Strings
 This library now sends Strings
 ```cpp
 void ESP32ZabbixSender::AddItemString(String key, String value) {
@@ -74,5 +78,5 @@ int ESP32ZabbixSender::createZabbixPacketString(void) { // [private] create Zabb
 }
 ```
 
-# Bug fixing:
+## Bug fixing:
 This library had a function that when the client was available it sends the package, and when it doesn't it freezes. That is fixed.
