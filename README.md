@@ -27,7 +27,7 @@ https://github.com/zaphodus/ESP8266ZabbixSender
 
 # Improvements done:
 ## Ethernet
-This library was changed form WiFi to Ethernet
+This library was changed from WiFi to Ethernet
 
 ## Strings
 This library now sends Strings
