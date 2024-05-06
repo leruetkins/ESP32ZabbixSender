@@ -3,13 +3,13 @@
 ESP32ZabbixSender zSender;
 
 /* WiFi settings */
-String ssid = "AP_SSID";
-String pass = "AP_PASSWD";
+String ssid = "-----------";
+String pass = "--------------";
 
 /* Zabbix server setting */
-#define SERVERADDR 192, 168, 35, 14 // Zabbix server Address
+#define SERVERADDR --------- // Zabbix server Address
 #define ZABBIXPORT 10051			// Zabbix erver Port
-#define ZABBIXAGHOST "IOTBOARD_00"  // Zabbix item's host name
+#define ZABBIXAGHOST "-------"  // Zabbix item's host name
 
 boolean checkConnection();
 

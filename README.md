@@ -24,3 +24,59 @@ See `sample_ESP32ZabbixSender/sample_ESP32ZabbixSender.ino`
 
 # Based on:  
 https://github.com/zaphodus/ESP8266ZabbixSender
+
+# Improvements done:
+## Ethernet
+This library was changed from WiFi to Ethernet
+
+## Strings
+This library now sends Strings
+```cpp
+void ESP32ZabbixSender::AddItemString(String key, String value) {
+	zabbixItemListString[zabbixItemSizeString].key = key;
+	zabbixItemListString[zabbixItemSizeString].val = value;
+	zabbixItemSizeString++;
+}```
+
+```cpp
+int ESP32ZabbixSender::createZabbixPacketString(void) { // [private] create ZabbixPacket
+	int packetLen = 0;
+	char s[16];
+	String Json = "{\"request\":\"sender data\",\"data\":[";
+	for (int i = 0; i < zabbixItemSizeString; i++) {
+		if (i > 0) {
+			Json += ",";
+		}
+		Json += "{\"host\":\"" + zItemHost + "\",\"key\":\"" + zabbixItemListString[i].key + "\",\"value\":\"" + zabbixItemListString[i].val + "\"}";
+	}
+	Json += "]}";
+
+	for (int i = 0; i < ZABBIXMAXLEN; i++) {
+		zabbixPacket[i] = 0;
+	}
+	zabbixPacket[0] = 'Z';
+	zabbixPacket[1] = 'B';
+	zabbixPacket[2] = 'X';
+	zabbixPacket[3] = 'D';
+	zabbixPacket[4] = 0x01;
+	uint16_t JsonLen = Json.length();
+	uint16_t remLen = JsonLen;
+	for (int i = 0; i < 8; i++) {
+		zabbixPacket[5 + i] = (remLen % 256);
+		remLen = (uint16_t)remLen / 256;
+	}
+	Json.getBytes(&(zabbixPacket[13]), ZABBIXMAXLEN - 12);
+	packetLen = 13 + JsonLen;
+#ifndef SILENT
+	Serial.print("request = ");
+	for (int i = 0; i < packetLen; i++) {
+		Serial.print((char)(zabbixPacket[i]));
+	}
+	Serial.println();
+#endif
+	return packetLen;
+}
+```
+
+## Bug fixing:
+This library had a function that when the client was available it sends the package, and when it doesn't it freezes. That is fixed.
